@@ -5,7 +5,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">LEDA:Laboratory Experimentation Data Analysis framework</h3>
+  <h3 align="center">LEDA:Laboratory Experimentation Data Analysis</h3>
 
   <p align="center">
     A unique tool designed to extract information about the learner path while manipulating the remote experiments.
