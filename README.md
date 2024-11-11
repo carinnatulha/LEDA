@@ -1,6 +1,18 @@
-# LEDA:Laboratory Experimentation Data Analysis framework 
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-LEDA is a unique tool designed to extract information about the learner path while manipulating the remote experiment VISIR. Based on a learning analytics approach, this framework provides valuable insights into the learner's behavior using exploratory data analysis, clustering, and association rules algorithms. 
+  <h3 align="center">LEDA:Laboratory Experimentation Data Analysis framework</h3>
+
+  <p align="center">
+    A unique tool designed to extract information about the learner path while manipulating the remote experiments.
+  </p>
+</div>
+
+
 
 <!-- LICENSE -->
 ## License
