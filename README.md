@@ -12,6 +12,16 @@
   </p>
 </div>
 
+<!-- REFERENCE -->
+## Reference
+If you want to use LEDA in your research, you can cite this article which discusses the model in more detail. Cite it as follows:
+
+```
+Tulha, Carinna Nunes, Marco Antonio G. Carvalho, and Leandro N. de Castro.
+"LEDA: A learning analytics based framework to analyze remote labs interaction."
+Proceedings of the Ninth ACM Conference on Learning@ Scale. 2022.
+```
+
 
 
 <!-- LICENSE -->
