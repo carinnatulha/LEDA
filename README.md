@@ -8,8 +8,8 @@
   </p>
 </div>
 
-<!-- REFERENCE -->
-## Reference
+<!-- CITE AS -->
+## Cite as
 If you want to use LEDA in your research, you can cite this article which discusses the model in more detail. Cite it as follows:
 
 ```
