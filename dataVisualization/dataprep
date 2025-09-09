@@ -1,0 +1,40 @@
+import pandas as pd
+import panel as pn
+import holoviews as hv
+import pandas as pd
+from mlxtend.frequent_patterns import association_rules
+import panel as pn
+import dataAnalisis.exploratory as exp
+
+from panel.template import FastListTemplate
+
+def setup_dashboard():
+    pn.extension('tabulator')
+    pn.extension()
+
+
+def prepare_dataframes(UserAtivFinal, act_df, freq_df, tct_df, manip, class_error):
+    AtivFinal = UserAtivFinal.iloc[:]
+    AtivFinal.drop(AtivFinal.columns[13:], axis=1, inplace=True)
+    AtivFinal.drop(AtivFinal.columns[2:3], axis=1, inplace=True)
+    AtivFinal['exp_id'] = UserAtivFinal['exp_id']
+    AtivFinal.reset_index(drop=True, inplace=True)
+
+    #dataframe pipeline interactive
+    idf = act_df.interactive()
+    last = AtivFinal.interactive()
+    #bkt = bkt_df.interactive()
+    freq = freq_df.interactive()
+    tct = tct_df.interactive()
+    acce = manip.interactive()
+    erro = class_error.interactive()
+
+    return dict(
+        AtivFinal=AtivFinal,
+        idf=idf,
+        last=last,
+        freq=freq,
+        tct=tct,
+        acce=acce,
+        erro=erro,
+    )
