@@ -41,12 +41,19 @@
 
 This project was developed by using the following technologies:
     - python=3.10.12
+    
     - numpy==2.2.6 
+    
     - pandas==2.3.2
+    
     - scikit-learn==1.7.1
+    
     - panel==1.2.1
+    
     - hvplot==0.12.1
+    
     - seaborn==0.13.2
+    
     - mlxtend==0.23.4
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
