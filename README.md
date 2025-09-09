@@ -40,6 +40,8 @@
 ## Build With
 
 This project was developed by using the following technologies:
+
+```
     - python=3.10.12
     
     - numpy==2.2.6 
@@ -55,6 +57,7 @@ This project was developed by using the following technologies:
     - seaborn==0.13.2
     
     - mlxtend==0.23.4
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
