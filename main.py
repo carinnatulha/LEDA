@@ -105,9 +105,10 @@ def main():
     error_table = plots.create_error_table(class_error, select_stud, select_exp_id)
     heatmap_plot = plots.create_heatmap_panel(AtivFinal, select_exp_id, select_exp_id)
     correlation_heatmap = plots.create_correlation(act_df, select_exp_id)
-    indicators = plots.create_indicators(manip, select_exp_id)
+    session_indicator, circ_indicator = plots.create_indicators(manip, select_exp_id)
+    number = plots.create_tct_panel(tct_df, select_exp_id)
     cluster_bar, select_var, grouped_bar = plots.create_clustering_panel(cluster_sizes_k, result_df, select_exp_id)
-    rules_panel = plots.create_rules_panel(act_ap)
+    id_selector, generate_rules_for_id, association_data_prep, display_rules = plots.create_rules_panel(act_ap)
 
     # ---- descriptions ----
     activity_description, update_activity_description = desc.create_activity_description(select_stud, select_exp_id, idf)
@@ -116,16 +117,11 @@ def main():
     select_exp_id.param.watch(update_activity_description, 'value')
 
     # ---- Montar páginas ----
-    page1 = pages.Page1(exec_plot, score_plot, error_table, session_indicator="?", activity_description="?")
-    page2 = pages.Page2(freq_plot="?", circ_uniq_indicator="?", error_bar_plot="?", heatmap_plot="?")
-    page3 = pages.Page3(kc_description="?", number="?", plot_cluster_sizes_k="?", select_var="?", correlation_heatmap="?", display_rules="?")
+    page1 = pages.Page1(exec_plot, score_plot, error_table, session_indicator, activity_description)
+    page2 = pages.Page2(freq_plot, circ_indicator, cluster_bar, heatmap_plot)
+    page3 = pages.Page3(kc_description, number, cluster_bar, select_var, correlation_heatmap, display_rules)
 
     # ---- Template final ----
-    error_table, error_bar = plots.create_error_table(class_error, select_stud, select_exp_id)
-    heatmap_panel = plots.create_heatmap_panel(AtivFinal, select_exp_id)
-    session_ind, circ_ind = plots.create_indicators(manip, select_exp_id)
-    cluster_bar, select_var, grouped_bar = plots.create_clustering_panel(cluster_sizes_k, result_df, select_exp_id)
-    rules_panel = plots.create_rules_panel(act_ap)
     template = temp.build_template(page1, page2, page3, select_exp_id, select_stud)
 
 if __name__ == "__main__":
