@@ -1,9 +1,12 @@
 import panel as pn
 from panel.template import FastListTemplate
 
-def build_template(page1, page2, page3, select_exp_id, select_stud):
-    pages = {"Page 1": page1, "Page 2": page2, "Page 3": page3}
-    main_area = pn.Column(pages["Page 1"].view())
+def build_template(select_exp_id, select_stud, Page1, Page2, Page3):
+    pages = {
+    "Page 1": Page1(),
+    "Page 2": Page2(),
+    "Page 3": Page3(),
+    }
 
     def show_page(page_instance):
         main_area.clear()
@@ -16,6 +19,10 @@ def build_template(page1, page2, page3, select_exp_id, select_stud):
     page1_button.on_click(lambda _: show_page(pages["Page 1"]))
     page2_button.on_click(lambda _: show_page(pages["Page 2"]))
     page3_button.on_click(lambda _: show_page(pages["Page 3"]))
+
+    sidebar = pn.Column(  select_exp_id, select_stud)
+
+    main_area = pn.Column(pages["Page 1"].view())
 
     template = FastListTemplate(
         title="LEDA",
