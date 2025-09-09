@@ -4,7 +4,7 @@
   <h3 align="center">LEDA:Laboratory Experimentation Data Analysis</h3>
 
   <p align="center">
-    A unique tool designed to extract information about the learner path while manipulating the remote experiments.
+    A unique tool designed to extract information about the learner path while manipulating the remote experiments, regarding competencies.
   </p>
 </div>
 
@@ -33,7 +33,7 @@
   ├── description.py
   ├── pages.py
   ├── template.py
-├── main.py           # Testes unitários
+├── main.py          
 ```
 
 <!-- BUILD WITH -->
