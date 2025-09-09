@@ -87,14 +87,33 @@ def main():
     inertia = expl.elbow_method(UserAtivFinal)
     result_df, cluster_sizes_k = expl.kmeans_clustering(act_df)
 
+    # 10. Association Rules
+    act_ap = expl.association_data_prep(UserAtivFinal)
+
     # 10. Visualization
+    # ---- Dashboard Setup ----
+    dprep.setup_dashboard()
+    AtivFinal, idf, last, freq, tct, acce, erro = dprep.prepare_dataframes(UserAtivFinal, act_df, freq_df, tct_df, manip, class_error)
+    
     # ---- widgets ----
-    select_stud, select_exp_id = widg.create_widgets(data_dict["idf"].data)
+    select_stud, select_exp_id, id_selector = widg.create_widgets(idf)
 
     # ---- plots/tables ----
-    exec_plot = plots.create_exec_line_plot(data_dict["idf"], select_stud, select_exp_id)
-    score_plot = plots.create_score_line_plot(data_dict["idf"], select_stud, select_exp_id)
+    exec_plot = plots.exec_line_plot(idf, select_stud, select_exp_id)
+    score_plot = plots.attmp_line_plot(idf, select_stud, select_exp_id)
+    freq_plot = plots.freq_source_bar_plot(freq, select_exp_id)
     error_table = plots.create_error_table(class_error, select_stud, select_exp_id)
+    heatmap_plot = plots.create_heatmap_panel(AtivFinal, select_exp_id, select_exp_id)
+    correlation_heatmap = plots.create_correlation(act_df, select_exp_id)
+    indicators = plots.create_indicators(manip, select_exp_id)
+    cluster_bar, select_var, grouped_bar = plots.create_clustering_panel(cluster_sizes_k, result_df, select_exp_id)
+    rules_panel = plots.create_rules_panel(act_ap)
+
+    # ---- descriptions ----
+    activity_description, update_activity_description = desc.create_activity_description(select_stud, select_exp_id, idf)
+    select_exp_id.param.watch(update_activity_description, 'value')
+    kc_description, update_kc_description = desc.create_kc_description(select_exp_id)
+    select_exp_id.param.watch(update_activity_description, 'value')
 
     # ---- Montar páginas ----
     page1 = pages.Page1(exec_plot, score_plot, error_table, session_indicator="?", activity_description="?")
@@ -102,13 +121,12 @@ def main():
     page3 = pages.Page3(kc_description="?", number="?", plot_cluster_sizes_k="?", select_var="?", correlation_heatmap="?", display_rules="?")
 
     # ---- Template final ----
-    template = temp.build_template(page1, page2, page3, select_exp_id, select_stud)
-    error_table, error_bar = plots.create_error_panel(class_error, select_stud, select_exp_id)
+    error_table, error_bar = plots.create_error_table(class_error, select_stud, select_exp_id)
     heatmap_panel = plots.create_heatmap_panel(AtivFinal, select_exp_id)
-    corr_panel = plots.create_correlation_panel(act_dm, select_exp_id)
     session_ind, circ_ind = plots.create_indicators(manip, select_exp_id)
     cluster_bar, select_var, grouped_bar = plots.create_clustering_panel(cluster_sizes_k, result_df, select_exp_id)
     rules_panel = plots.create_rules_panel(act_ap)
+    template = temp.build_template(page1, page2, page3, select_exp_id, select_stud)
 
 if __name__ == "__main__":
     main()
