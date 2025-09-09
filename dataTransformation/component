@@ -1,0 +1,106 @@
+import numpy as np
+
+#-----COMPONENTES----
+def component_features(act_df, df3):
+    #resistor
+    #act_df['R1K'] = df3['breadboard_simp'].apply(lambda x: 1 if '1k' in x else 0)
+    act_df['R12K'] = df3['breadboard_simp'].apply(lambda x: 1 if '1.2k' in x else 0)
+    #act_df['R15K'] = df3['breadboard_simp'].apply(lambda x: 1 if '1.5k' in x else 0)
+    #act_df['R56K'] = df3['breadboard_simp'].apply(lambda x: 1 if '5.6k' in x else 0)
+    act_df['R470K'] = df3['breadboard_simp'].apply(lambda x: 1 if '470k' in x else 0)
+    act_df['R10K'] = df3['breadboard_simp'].apply(lambda x: 1 if '10k' in x else 0)
+    #act_df['R100K'] = df3['breadboard_simp'].apply(lambda x: 1 if '100k' in x else 0)
+
+    #capacitor
+    #act_df['C'] = df3['breadboard_simp'].apply(lambda x: 1 if 'C_X' in x else 0)
+
+    #fonte
+    act_df['DC+6V'] = df3['breadboard_simp'].apply(lambda x: 1 if 'VDC+6V_1' in x else 0)
+
+    #multimetro
+    act_df['DMM_v'] = df3['breadboard_simp'].apply(lambda x: 1 if ('DMM_1' or 'DMM_2') in x else 0)
+    act_df['DMM_mA'] = df3['breadboard_simp'].apply(lambda x: 1 if ('IPROBE_1') in x else 0)
+
+    #osciloscopio
+    #act_df['OSC'] = df3['breadboard_simp'].apply(lambda x: 1 if ('PROBE_1_1' or 'PROBE_2_1') in x else 0)
+
+    #gerador de função
+    #act_df['FG'] = df3['breadboard_simp'].apply(lambda x: 1 if 'VFGENA' in x else 0)
+
+    #terra
+    act_df['GND'] = df3['breadboard_simp'].apply(lambda x: 1 if 'GND' in x else 0)
+
+    act_comp = act_df[['R12K', 'R470K', 'R10K', 'DMM_mA', 'DMM_v', 'GND']].copy()
+
+#-----TIPO DE CIRCUITO-----
+
+#nenhum resistor, apenas 1 resistor, serie, paralelo ou misto
+#df3['breadboard_norm'] = df3['breadboard_norm'].replace(r'(\d+(\.\d+)?k\s+P\d+\s+P\d+\s+)(R_X)', r'\3 \1', regex=True)
+
+# Define the update_row function
+def circuite_type(breadboard):
+    if 'R_X' not in breadboard:
+        return '0 resistor'
+    elif breadboard.count('R_X') == 1:
+        return '1 resistor'
+    else:
+        parallel = True
+        for part in breadboard.split(','):
+            if 'R_X' in part:
+                positions = [part.split(' ')[-1] for part in breadboard.split(',') if 'R_X' in part]
+                if len(set(positions)) != 1:
+                    parallel = False
+                    break
+        if parallel:
+            return 'parallel'
+        else:
+            return 'series'
+
+
+#------MARGEM DE ERRO DAS FERRAMENTAS DE MEDIÇÃO-----
+def tolerance(act_df):
+    reference_dmm_p1 = 0
+
+    reference_dmm_p11_470 = 10.71
+    reference_dmm_p11_12 = 4.233 
+    reference_dmm_p11_10 = 526.9 
+
+    reference_dmm_p12 = 453.7
+
+    reference_dmm_p13_470 = 202.3
+    reference_dmm_p13_12 = 514.0 
+    reference_dmm_p13_10 = 4.281 
+
+    reference_dc_p11 = 5.0 
+
+    # Calculate the error margin
+    error_margin_dmm_p11_470 = reference_dmm_p11_470 * 0.2
+    error_margin_dmm_p11_12 = reference_dmm_p11_12 * 0.2
+    error_margin_dmm_p11_10 = reference_dmm_p11_10 * 0.2
+
+    error_margin_dmm_p12 = reference_dmm_p12 * 0.2
+
+    error_margin_dmm_p13_470 = reference_dmm_p13_470 * 0.2
+    error_margin_dmm_p13_12 = reference_dmm_p13_12 * 0.2
+    error_margin_dmm_p13_10 = reference_dmm_p13_10 * 0.2
+
+    error_margin_dc_p11 = reference_dc_p11 * 0.1
+
+    act_df['value_p11_470'] = np.where(act_df['DMM_value'].between(reference_dmm_p11_470 - error_margin_dmm_p11_470, reference_dmm_p11_470 + error_margin_dmm_p11_470), 1, 0)
+    act_df['value_p11_12'] = np.where(act_df['DMM_value'].between(reference_dmm_p11_12 - error_margin_dmm_p11_12, reference_dmm_p11_12 + error_margin_dmm_p11_12), 1, 0)
+    act_df['value_p11_10'] = np.where(act_df['DMM_value'].between(reference_dmm_p11_10 - error_margin_dmm_p11_10, reference_dmm_p11_10 + error_margin_dmm_p11_10), 1, 0)
+
+    act_df['value_p12'] = np.where(act_df['DMM_value'].between(reference_dmm_p12 - error_margin_dmm_p12, reference_dmm_p12 + error_margin_dmm_p12), 1, 0)
+
+    act_df['value_p13_470'] = np.where(act_df['DMM_value'].between(reference_dmm_p13_470 - error_margin_dmm_p13_470, reference_dmm_p13_470 + error_margin_dmm_p13_470), 1, 0)
+    act_df['value_p13_12'] = np.where(act_df['DMM_value'].between(reference_dmm_p13_12 - error_margin_dmm_p13_12, reference_dmm_p13_12 + error_margin_dmm_p13_12), 1, 0)
+    act_df['value_p13_10'] = np.where(act_df['DMM_value'].between(reference_dmm_p13_10 - error_margin_dmm_p13_10, reference_dmm_p13_10 + error_margin_dmm_p13_10), 1, 0)
+
+
+    act_df['DC6+_volt_p1'] = np.where(act_df['DC6+_volt'].between(reference_dc_p11 - error_margin_dc_p11, reference_dc_p11 + error_margin_dc_p11), 1, 0)
+    tools = act_df[['value_p11_470', 'value_p11_12', 'value_p11_10', 'value_p12',
+        'value_p13_470', 'value_p13_12', 'value_p13_10', 'DC6+_volt_p1']].copy()
+
+    act_df = act_df.drop('DMM_value', axis=1)
+
+    return act_df, tools
